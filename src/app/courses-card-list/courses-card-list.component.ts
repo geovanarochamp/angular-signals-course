@@ -11,8 +11,4 @@ import { Course } from '../models/course.model';
 })
 export class CoursesCardListComponent {
   courses = input.required<Course[]>();
-
-  constructor() {
-    this.courses();
-  }
 }

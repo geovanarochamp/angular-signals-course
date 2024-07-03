@@ -12,11 +12,9 @@ export class CoursesService {
   http = inject(HttpClient);
   env = environment;
 
-  async loadAllCourses(): Promise<Course[]> {
-    const courses$ = this.http.get<GetCoursesResponse>(
-      `${this.env.apiRoot}/courses`
-    );
-
+  async loadAllCourses():Promise<Course[]> {
+    const courses$ =
+      this.http.get<GetCoursesResponse>(`${this.env.apiRoot}/courses`);
     const response = await firstValueFrom(courses$);
     return response.courses;
   }

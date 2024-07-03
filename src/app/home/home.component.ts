@@ -31,7 +31,7 @@ export class HomeComponent {
       console.log(`Advanced courses: `, this.advancedCourses());
     });
     this.loadCourses().then(() =>
-      console.log(`All courses loaded: `, this.#courses())
+      console.log(`All courses loaded:`, this.#courses())
     );
   }
 
@@ -39,9 +39,9 @@ export class HomeComponent {
     try {
       const courses = await this.coursesService.loadAllCourses();
       this.#courses.set(courses.sort(sortCoursesBySeqNo));
-    } catch (error) {
+    } catch (err) {
       alert(`Error loading courses!`);
-      console.error(error);
+      console.error(err);
     }
   }
 }
