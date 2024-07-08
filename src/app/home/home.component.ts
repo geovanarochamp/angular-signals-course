@@ -1,6 +1,9 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { CoursesCardListComponent } from '../courses-card-list/courses-card-list.component';
+import { openEditCourseDialog } from '../edit-course-dialog/edit-course-dialog.component';
+import { MessagesService } from '../messages/messages.service';
 import { Course, sortCoursesBySeqNo } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
 
@@ -14,6 +17,7 @@ import { CoursesService } from '../services/courses.service';
 export class HomeComponent {
   #courses = signal<Course[]>([]);
   coursesService = inject(CoursesService);
+  dialog = inject(MatDialog);
 
   beginnerCourses = computed(() => {
     const courses = this.#courses();
@@ -24,6 +28,8 @@ export class HomeComponent {
     const courses = this.#courses();
     return courses.filter((course) => course.category === 'ADVANCED');
   });
+
+  messagesService = inject(MessagesService);
 
   constructor() {
     effect(() => {
@@ -40,7 +46,7 @@ export class HomeComponent {
       const courses = await this.coursesService.loadAllCourses();
       this.#courses.set(courses.sort(sortCoursesBySeqNo));
     } catch (err) {
-      alert(`Error loading courses!`);
+      this.messagesService.showMessage('Error loading courses', 'error');
       console.error(err);
     }
   }
@@ -61,7 +67,17 @@ export class HomeComponent {
       this.#courses.set(newCourses);
     } catch (err) {
       console.error(err);
-      alert(`Error deleting course!`);
+      this.messagesService.showMessage('Error deleting course!', 'error');
     }
+  }
+
+  async onAddCourse() {
+    const newCourse = await openEditCourseDialog(this.dialog, {
+      mode: 'create',
+      title: 'Create new course',
+    });
+
+    const newCourses = [...this.#courses(), newCourse];
+    this.#courses.set(newCourses);
   }
 }

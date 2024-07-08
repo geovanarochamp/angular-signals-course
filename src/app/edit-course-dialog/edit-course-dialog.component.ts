@@ -9,6 +9,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { CourseCategoryComboboxComponent } from '../course-category-combobox/course-category-combobox.component';
 import { LoadingIndicatorComponent } from '../loading/loading.component';
+import { MessagesService } from '../messages/messages.service';
 import { Course } from '../models/course.model';
 import { CoursesService } from '../services/courses.service';
 import { EditCourseDialogData } from './edit-course-dialog.data.model';
@@ -38,6 +39,7 @@ export class EditCourseDialogComponent {
   });
 
   courseService = inject(CoursesService);
+  messagesService = inject(MessagesService);
 
   constructor() {
     this.form.patchValue({
@@ -58,6 +60,10 @@ export class EditCourseDialogComponent {
     if (this.data.mode === 'update') {
       this.updateCourse(this.data.course!.id, courseProps);
     }
+
+    if (this.data.mode === 'create') {
+      this.createCourse(courseProps);
+    }
   }
 
   async updateCourse(courseId: string, changes: Partial<Course>) {
@@ -66,7 +72,18 @@ export class EditCourseDialogComponent {
       this.dialogRef.close(updatedCourse);
     } catch (err) {
       console.error(err);
-      alert(`Failed to save the course.`);
+
+      this.messagesService.showMessage('Failed to save the course.', 'error');
+    }
+  }
+
+  async createCourse(course: Partial<Course>) {
+    try {
+      const newCourse = await this.courseService.createCourse(course);
+      this.dialogRef.close(newCourse);
+    } catch (err) {
+      console.error(err);
+      this.messagesService.showMessage('Failed to create the course.', 'error');
     }
   }
 }
