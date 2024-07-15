@@ -28,7 +28,7 @@ export class LessonsService {
     }
 
     const lessons$ = this.http.get<GetLessonsResponse>(
-      `${this.env.apiRoot}/lessons`,
+      `${this.env.apiRoot}/search-lessons`,
       { params }
     );
     const response = await firstValueFrom(lessons$);

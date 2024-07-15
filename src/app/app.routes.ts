@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { courseLessonsResolver } from './course/course-lessosn.resolver';
+import { courseLessonsResolver } from './course/course-lessons.resolver';
 import { CourseComponent } from './course/course.component';
 import { courseResolver } from './course/course.resolver';
 import { isUserAuthenticated } from './guards/auth.guard';

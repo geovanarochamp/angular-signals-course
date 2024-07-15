@@ -12,11 +12,9 @@ export const courseLessonsResolver: ResolveFn<Lesson[]> = async (
   state: RouterStateSnapshot
 ) => {
   const courseId = route.paramMap.get('courseId');
-
   if (!courseId) {
     return [];
   }
-
   const lessonsService = inject(LessonsService);
   return lessonsService.loadLessons({ courseId });
 };
