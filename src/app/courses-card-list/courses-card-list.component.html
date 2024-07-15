@@ -11,10 +11,17 @@
   </div>
 
   <div class="course-actions">
-    <button class="btn">VIEW COURSE</button>
+    <button class="btn" [routerLink]="['courses', course.id]">
+      VIEW COURSE
+    </button>
     <button class="btn" (click)="onEditCourse(course)">EDIT</button>
 
-    <img class="delete" src="/assets/icons/delete.svg" alt="delete icon" (click)="onCourseDeleted(course)" />
+    <img
+      class="delete"
+      src="/assets/icons/delete.svg"
+      alt="delete icon"
+      (click)="onCourseDeleted(course)"
+    />
   </div>
 </div>
 }
